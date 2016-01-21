@@ -435,9 +435,14 @@ xcf_save_image_props (XcfInfo    *info,
   if (g_list_length (gimp_image_symmetry_get (image)))
     {
       GimpParasite *parasite  = NULL;
+      GimpSymmetry *symmetry;
 
       for (iter = gimp_image_symmetry_get (image); iter; iter = g_list_next (iter))
         {
+          symmetry = GIMP_SYMMETRY (iter->data);
+          if (symmetry->type == GIMP_TYPE_SYMMETRY)
+            /* Do not save the identity symmetry. */
+            continue;
           parasite = gimp_symmetry_to_parasite (GIMP_SYMMETRY (iter->data));
           gimp_parasite_list_add (private->parasites, parasite);
           symmetry_parasites = g_list_prepend (symmetry_parasites, parasite);

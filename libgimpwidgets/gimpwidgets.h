@@ -54,6 +54,8 @@
 #include <libgimpwidgets/gimpenumwidgets.h>
 #include <libgimpwidgets/gimpfileentry.h>
 #include <libgimpwidgets/gimpframe.h>
+#include <libgimpwidgets/gimpgtypecombobox.h>
+#include <libgimpwidgets/gimpgtypestore.h>
 #include <libgimpwidgets/gimphelpui.h>
 #include <libgimpwidgets/gimphintbox.h>
 #include <libgimpwidgets/gimpicons.h>

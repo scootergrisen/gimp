@@ -122,6 +122,10 @@ libgimpwidgets_sources = \
 	gimpfileentry.h			\
 	gimpframe.c			\
 	gimpframe.h			\
+	gimpgtypecombobox.c		\
+	gimpgtypecombobox.h		\
+	gimpgtypestore.c		\
+	gimpgtypestore.h		\
 	gimphelpui.c			\
 	gimphelpui.h			\
 	gimphintbox.c			\
@@ -228,6 +232,8 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpenumwidgets.h		\
 	gimpfileentry.h			\
 	gimpframe.h			\
+	gimpgtypecombobox.h		\
+	gimpgtypestore.h		\
 	gimphelpui.h			\
 	gimphintbox.h			\
 	gimpicons.h			\

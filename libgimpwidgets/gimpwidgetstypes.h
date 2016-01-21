@@ -57,6 +57,8 @@ typedef struct _GimpEnumComboBox              GimpEnumComboBox;
 typedef struct _GimpEnumLabel                 GimpEnumLabel;
 typedef struct _GimpFileEntry                 GimpFileEntry;
 typedef struct _GimpFrame                     GimpFrame;
+typedef struct _GimpGTypeComboBox             GimpGTypeComboBox;
+typedef struct _GimpGTypeStore                GimpGTypeStore;
 typedef struct _GimpIntComboBox               GimpIntComboBox;
 typedef struct _GimpIntStore                  GimpIntStore;
 typedef struct _GimpMemsizeEntry              GimpMemsizeEntry;

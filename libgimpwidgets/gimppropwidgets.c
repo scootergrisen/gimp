@@ -510,6 +510,110 @@ gimp_prop_int_combo_box_notify (GObject    *config,
                                      config);
 }
 
+/************************/
+/*  GType combo box   */
+/************************/
+
+static void   gimp_prop_gtype_combo_box_callback (GtkWidget   *widget,
+                                                  GObject     *config);
+static void   gimp_prop_gtype_combo_box_notify   (GObject     *config,
+                                                  GParamSpec  *param_spec,
+                                                  GtkWidget   *widget);
+
+/**
+ * gimp_prop_gtype_combo_box_new:
+ * @config:        Object to which property is attached.
+ * @property_name: Name of GType property controlled by combo box.
+ * @store:         #GimpGTypeStore holding list of labels, values, etc.
+ *
+ * Creates a #GimpGTypeComboBox widget to display and set the specified
+ * property.  The contents of the widget are determined by @store,
+ * which should be created using gimp_gtype_store_new().
+ *
+ * Return value: The newly created #GimpGTypeComboBox widget.
+ *
+ * Since GIMP 2.10
+ */
+GtkWidget *
+gimp_prop_gtype_combo_box_new (GObject        *config,
+                               const gchar    *property_name,
+                               GimpGTypeStore *store)
+{
+  GParamSpec *param_spec;
+  GtkWidget  *combo_box;
+  GType       value;
+
+  g_return_val_if_fail (G_IS_OBJECT (config), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+
+  param_spec = check_param_spec_w (config, property_name,
+                                   G_TYPE_PARAM_GTYPE, G_STRFUNC);
+  if (! param_spec)
+    return NULL;
+
+  g_object_get (config,
+                property_name, &value,
+                NULL);
+
+  combo_box = g_object_new (GIMP_TYPE_GTYPE_COMBO_BOX,
+                            "model", store,
+                            NULL);
+
+  gimp_gtype_combo_box_set_active (GIMP_GTYPE_COMBO_BOX (combo_box), value);
+
+  g_signal_connect (combo_box, "changed",
+                    G_CALLBACK (gimp_prop_gtype_combo_box_callback),
+                    config);
+
+  set_param_spec (G_OBJECT (combo_box), combo_box, param_spec);
+
+  connect_notify (config, property_name,
+                  G_CALLBACK (gimp_prop_gtype_combo_box_notify),
+                  combo_box);
+
+  return combo_box;
+}
+
+static void
+gimp_prop_gtype_combo_box_callback (GtkWidget *widget,
+                                    GObject   *config)
+{
+  GParamSpec  *param_spec;
+  GType        value;
+
+  param_spec = get_param_spec (G_OBJECT (widget));
+  if (! param_spec)
+    return;
+
+  if (gimp_gtype_combo_box_get_active (GIMP_GTYPE_COMBO_BOX (widget), &value))
+    {
+      g_object_set (config,
+                    param_spec->name, value,
+                    NULL);
+    }
+}
+
+static void
+gimp_prop_gtype_combo_box_notify (GObject    *config,
+                                  GParamSpec *param_spec,
+                                  GtkWidget  *combo_box)
+{
+  GType value;
+
+  g_object_get (config,
+                param_spec->name, &value,
+                NULL);
+
+  g_signal_handlers_block_by_func (combo_box,
+                                   gimp_prop_gtype_combo_box_callback,
+                                   config);
+
+  gimp_gtype_combo_box_set_active (GIMP_GTYPE_COMBO_BOX (combo_box), value);
+
+  g_signal_handlers_unblock_by_func (combo_box,
+                                     gimp_prop_gtype_combo_box_callback,
+                                     config);
+}
 
 /************************/
 /*  boolean combo box   */

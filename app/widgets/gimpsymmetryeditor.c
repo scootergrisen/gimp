@@ -258,7 +258,7 @@ gimp_symmetry_editor_image_changed (GimpContext        *context,
       GList        *sym_iter;
       GimpSymmetry *symmetry;
 
-      store = gimp_int_store_new ();
+      store = gimp_gtype_store_new ();
 
       /* The menu of available symmetries. */
       syms = gimp_image_symmetry_list ();
@@ -272,9 +272,9 @@ gimp_symmetry_editor_image_changed (GimpContext        *context,
 
           gtk_list_store_prepend (store, &iter);
           gtk_list_store_set (store, &iter,
-                              GIMP_INT_STORE_LABEL,
+                              GIMP_GTYPE_STORE_LABEL,
                               klass->label,
-                              GIMP_INT_STORE_VALUE,
+                              GIMP_GTYPE_STORE_VALUE,
                               sym_iter->data,
                               -1);
           g_type_class_unref (klass);
@@ -283,15 +283,15 @@ gimp_symmetry_editor_image_changed (GimpContext        *context,
 
       gtk_list_store_prepend (store, &iter);
       gtk_list_store_set (store, &iter,
-                          GIMP_INT_STORE_LABEL, _("None"),
-                          GIMP_INT_STORE_VALUE, G_TYPE_NONE,
+                          GIMP_GTYPE_STORE_LABEL, _("None"),
+                          GIMP_GTYPE_STORE_VALUE, GIMP_TYPE_SYMMETRY,
                           -1);
-      editor->p->menu = gimp_prop_int_combo_box_new (G_OBJECT (image),
-                                                     "symmetry",
-                                                     GIMP_INT_STORE (store));
+      editor->p->menu = gimp_prop_gtype_combo_box_new (G_OBJECT (image),
+                                                       "symmetry",
+                                                       GIMP_GTYPE_STORE (store));
       g_object_unref (store);
 
-      gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (editor->p->menu),
+      gimp_gtype_combo_box_set_label (GIMP_GTYPE_COMBO_BOX (editor->p->menu),
                                     _("Symmetry"));
       g_object_set (editor->p->menu, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
